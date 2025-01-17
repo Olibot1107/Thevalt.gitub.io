@@ -6,37 +6,34 @@
     <title>The Valt</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: black;
-            overflow-x: hidden;
+            background: black;
             color: white;
-            animation: stars 50s infinite linear;
-        }
-        @keyframes stars {
-            from {background-position: 0 0;}
-            to {background-position: -10000px 5000px;}
+            overflow-x: hidden;
+            position: relative;
         }
         header {
-            background-color: rgba(30, 131, 194, 0.9);
-            padding: 40px 0;
+            background-color: transparent;
+            color: #1e83c2;
+            padding: 20px 0;
             text-align: center;
-            animation: glowText 1.5s ease-in-out infinite alternate;
-            font-size: 2.5em;
+            text-shadow: 0 0 10px #1e83c2, 0 0 20px #1e83c2, 0 0 40px #1e83c2;
+            animation: neonGlow 1.5s infinite alternate;
         }
-        @keyframes glowText {
-            0% { text-shadow: 0 0 5px #fff, 0 0 10px #1e83c2, 0 0 20px #1e83c2, 0 0 40px #1e83c2, 0 0 80px #1e83c2, 0 0 90px #1e83c2, 0 0 100px #1e83c2, 0 0 150px #1e83c2; }
-            100% { text-shadow: 0 0 10px #fff, 0 0 20px #1e83c2, 0 0 30px #1e83c2, 0 0 50px #1e83c2, 0 0 80px #1e83c2, 0 0 120px #1e83c2, 0 0 150px #1e83c2, 0 0 200px #1e83c2; }
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 5px #1e83c2, 0 0 10px #1e83c2, 0 0 20px #1e83c2;
+            }
+            to {
+                text-shadow: 0 0 15px #1e83c2, 0 0 30px #1e83c2, 0 0 60px #1e83c2;
+            }
         }
         nav {
             display: flex;
             justify-content: center;
-            background-color: rgba(30, 131, 194, 0.8);
-            padding: 10px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            background-color: rgba(30, 131, 194, 0.9);
         }
         nav a {
             color: white;
@@ -44,26 +41,35 @@
             text-decoration: none;
             text-align: center;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            text-shadow: 0 0 10px #fff, 0 0 20px #1e83c2;
+            text-shadow: 0 0 10px white;
         }
         nav a:hover {
             transform: scale(1.2);
             box-shadow: 0 0 20px white;
-            text-shadow: 0 0 20px #fff, 0 0 30px #1e83c2, 0 0 40px #1e83c2;
         }
         .content {
-            padding: 50px;
+            padding: 40px 20px;
             text-align: center;
-            position: relative;
-            animation: float 3s ease-in-out infinite;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        .content:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        .content:nth-child(3) {
+            animation-delay: 1s;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
         button {
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 10px 20px;
+            font-size: 16px;
             color: white;
             background-color: #1e83c2;
             border: none;
@@ -71,71 +77,86 @@
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-shadow: 0 0 10px #fff, 0 0 20px #1e83c2;
         }
         button:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 0 20px #1e83c2;
-        }
-        button:active {
-            animation: explode 0.5s ease-in-out;
-        }
-        @keyframes explode {
-            0% { box-shadow: 0 0 20px #1e83c2; }
-            50% { box-shadow: 0 0 50px #1e83c2; transform: scale(1.5); }
-            100% { box-shadow: 0 0 20px #1e83c2; transform: scale(1); }
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(30, 131, 194, 0.8);
         }
         .footer {
             background-color: rgba(30, 131, 194, 0.9);
-            padding: 20px;
+            color: white;
+            padding: 10px 0;
             text-align: center;
+        }
+        .modal {
+            display: none;
             position: fixed;
-            bottom: 0;
+            z-index: 1;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
             width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .modal-content {
+            background-color: #f4f4f4;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            text-align: center;
+            color: black;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Particle Background */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        /* Custom Cursor */
+        .cursor {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+            position: absolute;
+            pointer-events: none;
+            animation: cursorTrail 0.5s linear infinite;
+        }
+        @keyframes cursorTrail {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2);
+            }
         }
     </style>
 </head>
 <body>
+
+<div id="particles-js"></div>
 
 <header>
     <h1>The Valt</h1>
 </header>
 
 <nav>
-    <a href="#home">Home</a>
-    <a href="#kits">Kits</a>
-    <a href="#discord">Discord</a>
-</nav>
-
-<div class="content" id="home">
-    <h2>About Our Server</h2>
-    <p>Welcome to the ultimate Minecraft Kit Server!</p>
-    <button>Learn More</button>
-</div>
-
-<div class="content" id="kits">
-    <h2>How to Get Kits</h2>
-    <p>To get kits, follow these simple steps:</p>
-    <ol>
-        <li>First, join our <strong>Discord</strong>.</li>
-        <li>Join the server and get a kit.</li>
-        <li>Invite your friends to help grow the community.</li>
-    </ol>
-    <p>Join the fun and choose the kit that best suits your play style!</p>
-    <button>Get Your Kit</button>
-</div>
-
-<div class="content" id="discord">
-    <h2>Join Our Discord</h2>
-    <p>Stay connected with the community, get updates on new kits and events!</p>
-    <a href="https://discord.gg/55gbM698sc" target="_blank">
-        <button>Join Now</button>
-    </a>
-</div>
-
-<div class="footer">
-    <p>&copy; 2025 MC Kit Server. All rights reserved.</p>
-</div>
-
-</body>
-</html>
+    <a href="https://discord.gg/55gbM698sc">Join Our Discord</a>
+</nav
