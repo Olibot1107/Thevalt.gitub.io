@@ -54,28 +54,30 @@
             position: relative;
             animation: parallax 3s ease-in-out forwards;
             transform-origin: center;
-        }
-        .content:nth-child(even) {
             background-color: rgba(255, 255, 255, 0.8);
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         @keyframes parallax {
             0% { transform: translateY(50px); opacity: 0; }
             100% { transform: translateY(0); opacity: 1; }
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 18px;
             color: white;
             background-color: #1e83c2;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
         button:hover {
             transform: scale(1.1);
             box-shadow: 0 0 20px rgba(30, 131, 194, 0.8);
+            background-color: #555;
         }
         .footer {
             background-color: rgba(30, 131, 194, 0.9);
