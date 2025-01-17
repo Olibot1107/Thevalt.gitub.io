@@ -6,36 +6,37 @@
     <title>The Valt</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(-45deg, #1e83c2, #f4f4f4, #1e83c2, #555);
-            background-size: 400% 400%;
-            animation: gradientBackground 10s ease infinite;
+            background-color: black;
             overflow-x: hidden;
+            color: white;
+            animation: stars 50s infinite linear;
         }
-        @keyframes gradientBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes stars {
+            from {background-position: 0 0;}
+            to {background-position: -10000px 5000px;}
         }
         header {
             background-color: rgba(30, 131, 194, 0.9);
-            color: white;
-            padding: 20px 0;
+            padding: 40px 0;
             text-align: center;
-            animation: bounceIn 1s ease-out forwards;
+            animation: glowText 1.5s ease-in-out infinite alternate;
+            font-size: 2.5em;
         }
-        @keyframes bounceIn {
-            0% { transform: translateY(-100%); }
-            60% { transform: translateY(30px); }
-            100% { transform: translateY(0); }
+        @keyframes glowText {
+            0% { text-shadow: 0 0 5px #fff, 0 0 10px #1e83c2, 0 0 20px #1e83c2, 0 0 40px #1e83c2, 0 0 80px #1e83c2, 0 0 90px #1e83c2, 0 0 100px #1e83c2, 0 0 150px #1e83c2; }
+            100% { text-shadow: 0 0 10px #fff, 0 0 20px #1e83c2, 0 0 30px #1e83c2, 0 0 50px #1e83c2, 0 0 80px #1e83c2, 0 0 120px #1e83c2, 0 0 150px #1e83c2, 0 0 200px #1e83c2; }
         }
         nav {
             display: flex;
             justify-content: center;
-            background-color: rgba(30, 131, 194, 0.9);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: rgba(30, 131, 194, 0.8);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         nav a {
             color: white;
@@ -43,28 +44,26 @@
             text-decoration: none;
             text-align: center;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            text-shadow: 0 0 10px #fff, 0 0 20px #1e83c2;
         }
         nav a:hover {
             transform: scale(1.2);
             box-shadow: 0 0 20px white;
+            text-shadow: 0 0 20px #fff, 0 0 30px #1e83c2, 0 0 40px #1e83c2;
         }
         .content {
-            padding: 20px;
+            padding: 50px;
             text-align: center;
             position: relative;
-            animation: parallax 3s ease-in-out forwards;
-            transform-origin: center;
+            animation: float 3s ease-in-out infinite;
         }
-        .content:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-        @keyframes parallax {
-            0% { transform: translateY(50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 18px;
             color: white;
             background-color: #1e83c2;
             border: none;
@@ -72,16 +71,27 @@
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-shadow: 0 0 10px #fff, 0 0 20px #1e83c2;
         }
         button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(30, 131, 194, 0.8);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 20px #1e83c2;
+        }
+        button:active {
+            animation: explode 0.5s ease-in-out;
+        }
+        @keyframes explode {
+            0% { box-shadow: 0 0 20px #1e83c2; }
+            50% { box-shadow: 0 0 50px #1e83c2; transform: scale(1.5); }
+            100% { box-shadow: 0 0 20px #1e83c2; transform: scale(1); }
         }
         .footer {
             background-color: rgba(30, 131, 194, 0.9);
-            color: white;
-            padding: 10px 0;
+            padding: 20px;
             text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
@@ -92,7 +102,9 @@
 </header>
 
 <nav>
-    <a href="https://discord.gg/55gbM698sc">Join Our Discord</a>
+    <a href="#home">Home</a>
+    <a href="#kits">Kits</a>
+    <a href="#discord">Discord</a>
 </nav>
 
 <div class="content" id="home">
