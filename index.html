@@ -9,31 +9,33 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: black;
-            color: white;
+            background: linear-gradient(-45deg, #1e83c2, #f4f4f4, #1e83c2, #555);
+            background-size: 400% 400%;
+            animation: gradientBackground 10s ease infinite;
             overflow-x: hidden;
-            position: relative;
+        }
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         header {
-            background-color: transparent;
-            color: #1e83c2;
+            background-color: rgba(30, 131, 194, 0.9);
+            color: white;
             padding: 20px 0;
             text-align: center;
-            text-shadow: 0 0 10px #1e83c2, 0 0 20px #1e83c2, 0 0 40px #1e83c2;
-            animation: neonGlow 1.5s infinite alternate;
+            animation: bounceIn 1s ease-out forwards;
         }
-        @keyframes neonGlow {
-            from {
-                text-shadow: 0 0 5px #1e83c2, 0 0 10px #1e83c2, 0 0 20px #1e83c2;
-            }
-            to {
-                text-shadow: 0 0 15px #1e83c2, 0 0 30px #1e83c2, 0 0 60px #1e83c2;
-            }
+        @keyframes bounceIn {
+            0% { transform: translateY(-100%); }
+            60% { transform: translateY(30px); }
+            100% { transform: translateY(0); }
         }
         nav {
             display: flex;
             justify-content: center;
             background-color: rgba(30, 131, 194, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         nav a {
             color: white;
@@ -41,31 +43,24 @@
             text-decoration: none;
             text-align: center;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            text-shadow: 0 0 10px white;
         }
         nav a:hover {
             transform: scale(1.2);
             box-shadow: 0 0 20px white;
         }
         .content {
-            padding: 40px 20px;
+            padding: 20px;
             text-align: center;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
+            position: relative;
+            animation: parallax 3s ease-in-out forwards;
+            transform-origin: center;
         }
-        .content:nth-child(2) {
-            animation-delay: 0.5s;
+        .content:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.8);
         }
-        .content:nth-child(3) {
-            animation-delay: 1s;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        @keyframes parallax {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
         button {
             padding: 10px 20px;
@@ -88,70 +83,9 @@
             padding: 10px 0;
             text-align: center;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            padding-top: 60px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        .modal-content {
-            background-color: #f4f4f4;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            text-align: center;
-            color: black;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        /* Particle Background */
-        #particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        /* Custom Cursor */
-        .cursor {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: white;
-            position: absolute;
-            pointer-events: none;
-            animation: cursorTrail 0.5s linear infinite;
-        }
-        @keyframes cursorTrail {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: scale(2);
-            }
-        }
     </style>
 </head>
 <body>
-
-<div id="particles-js"></div>
 
 <header>
     <h1>The Valt</h1>
@@ -159,4 +93,37 @@
 
 <nav>
     <a href="https://discord.gg/55gbM698sc">Join Our Discord</a>
-</nav
+</nav>
+
+<div class="content" id="home">
+    <h2>About Our Server</h2>
+    <p>Welcome to the ultimate Minecraft Kit Server!</p>
+    <button>Learn More</button>
+</div>
+
+<div class="content" id="kits">
+    <h2>How to Get Kits</h2>
+    <p>To get kits, follow these simple steps:</p>
+    <ol>
+        <li>First, join our <strong>Discord</strong>.</li>
+        <li>Join the server and get a kit.</li>
+        <li>Invite your friends to help grow the community.</li>
+    </ol>
+    <p>Join the fun and choose the kit that best suits your play style!</p>
+    <button>Get Your Kit</button>
+</div>
+
+<div class="content" id="discord">
+    <h2>Join Our Discord</h2>
+    <p>Stay connected with the community, get updates on new kits and events!</p>
+    <a href="https://discord.gg/55gbM698sc" target="_blank">
+        <button>Join Now</button>
+    </a>
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 MC Kit Server. All rights reserved.</p>
+</div>
+
+</body>
+</html>
