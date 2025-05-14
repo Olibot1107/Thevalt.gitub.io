@@ -1,1 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Thevalt</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #00ff88;
+      font-family: monospace;
+      padding: 20px;
+      white-space: pre-wrap;
+    }
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background: #00ff88;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { background: transparent; }
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <h1>Hello, Welcome</h1>
+    <p>We are the valt </p>
+    <p>Fun Fact we made The Ojdaw1107 bot to use him on 6b do %kit</p>
+    <p>We are a small ish clan but we are working on it :)</p>
+    <p>we are around 1 year old</p>
+    <p>We started cuz Superoli and Olibot13 kida got bord so we just tryed makeing the clan</p>
+    <p>and thats how we got big</p>
+    <p>also your going to be sent to our real home page so good byeeeeeee (;</p>
+  </div>
 
+  <script>
+    // Step 1: Grab the existing HTML content
+    const originalHTML = document.getElementById('content').innerHTML;
+    const words = originalHTML
+      .replace(/<([^>]+)>/g, '\n<$1>\n') // isolate tags
+      .split(/\s+/); // split by whitespace
+
+    // Step 2: Clear the page
+    document.body.innerHTML = '<div id="builder"></div><span class="cursor">&nbsp;</span>';
+    const builder = document.getElementById('builder');
+
+    // Step 3: Rebuild it word by word
+    let i = 0;
+
+    function buildNextWord() {
+      if (i >= words.length) return;
+      builder.innerHTML += words[i] + ' ';
+      i++;
+      setTimeout(buildNextWord, 10); // adjust speed here
+    }
+
+    buildNextWord();
+  </script>
+</body>
+</html>
