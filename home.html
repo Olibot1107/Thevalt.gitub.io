@@ -9,53 +9,102 @@
       color: #00ff88;
       font-family: monospace;
       padding: 20px;
-      white-space: pre-wrap;
+      margin: 0;
     }
+
     .cursor {
       display: inline-block;
       width: 10px;
+      height: 1em;
       background: #00ff88;
       animation: blink 1s step-end infinite;
+      vertical-align: bottom;
     }
+
     @keyframes blink {
       50% { background: transparent; }
     }
   </style>
 </head>
 <body>
-  <div id="content">
-    <h1>Hello, Welcome</h1>
-    <p>We are the valt </p>
-    <p>Fun Fact we made The Ojdaw1107 bot to use him on 6b do %kit</p>
-    <p>We are a small ish clan but we are working on it :)</p>
-    <p>we are around 1 year old</p>
-    <p>We started cuz Superoli and Olibot13 kida got bord so we just tryed makeing the clan</p>
-    <p>and thats how we got big</p>
-    <p>also your going to be sent to our real home page so good byeeeeeee (;</p>
-  </div>
+  <div id="builder"></div>
 
   <script>
-    // Step 1: Grab the existing HTML content
-    const originalHTML = document.getElementById('content').innerHTML;
-    const words = originalHTML
-      .replace(/<([^>]+)>/g, '\n<$1>\n') // isolate tags
-      .split(/\s+/); // split by whitespace
+    const lines = [
+      "<h1>Hello, Welcome</h1>",
+      "<p>We are the valt</p>",
+      "<p>Fun Fact we made The Ojdaw1107 bot to use him on 6b do %kit</p>",
+      "<p>We are a small ish clan but we are working on it :)</p>",
+      "<p>we are around 1 year old</p>",
+      "<p>We started cuz Superoli and Olibot13 kida got bord so we just tryed makeing the clan</p>",
+      "<p>and thats how we got big</p>",
+      "<p>also your going to be sent to our real home page so good byeeeeeee (;</p>",
+      "<button></button>"
+    ];
 
-    // Step 2: Clear the page
-    document.body.innerHTML = '<div id="builder"></div><span class="cursor">&nbsp;</span>';
     const builder = document.getElementById('builder');
 
-    // Step 3: Rebuild it word by word
-    let i = 0;
+    let lineIndex = 0;
+    let charIndex = 0;
+    let fullText = '';
+    let element = null;
+    let cursor = document.createElement('span');
+    cursor.className = 'cursor';
 
-    function buildNextWord() {
-      if (i >= words.length) return;
-      builder.innerHTML += words[i] + ' ';
-      i++;
-      setTimeout(buildNextWord, 10); // adjust speed here
+    function typeNextChar() {
+      if (lineIndex >= lines.length) return;
+
+      // New line setup
+      if (charIndex === 0) {
+        const temp = document.createElement('div');
+        temp.innerHTML = lines[lineIndex];
+        element = temp.firstChild;
+        fullText = element.textContent;
+        builder.appendChild(element);
+        builder.appendChild(cursor);
+      }
+
+      // Move the cursor first, then display the character after cursor
+      const before = fullText.substring(0, charIndex);
+      const currentChar = fullText[charIndex] || '';
+      const after = fullText.substring(charIndex + 1);
+
+      // We hide the character until the cursor moves over it
+      element.innerHTML = '';
+      element.append(
+        document.createTextNode(before),
+        cursor,
+        document.createTextNode(currentChar === ' ' ? ' ' : '') // Hide the character until cursor reaches it
+      );
+
+      // Add cursor movement
+      charIndex++;
+
+      // Once the cursor reaches, reveal the character
+      setTimeout(() => {
+        if (currentChar !== ' ') {
+          element.innerHTML = '';
+          element.append(
+            document.createTextNode(before),
+            cursor,
+            document.createTextNode(currentChar + after)
+          );
+        }
+      }, 50); // Adjust delay for character appearance
+
+      // Scroll smoothly
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+      if (charIndex > fullText.length) {
+        charIndex = 0;
+        lineIndex++;
+        setTimeout(typeNextChar, 500); // optional pause between lines
+      } else {
+        setTimeout(typeNextChar, 50); // adjust speed of typing
+      }
     }
 
-    buildNextWord();
+    typeNextChar();
   </script>
 </body>
 </html>
