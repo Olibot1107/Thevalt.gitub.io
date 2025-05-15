@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Valt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(-45deg, #1e83c2, #f4f4f4, #1e83c2, #555);
+            background-size: 400% 400%;
+            animation: gradientBackground 10s ease infinite;
+            overflow-x: hidden;
+        }
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        header {
+            background-color: rgba(30, 131, 194, 0.9);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            animation: bounceIn 1s ease-out forwards;
+        }
+        @keyframes bounceIn {
+            0% { transform: translateY(-100%); }
+            60% { transform: translateY(30px); }
+            100% { transform: translateY(0); }
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: rgba(30, 131, 194, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        nav a:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px white;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            animation: parallax 3s ease-in-out forwards;
+            transform-origin: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        @keyframes parallax {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background-color: #1e83c2;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(30, 131, 194, 0.8);
+            background-color: #555;
+        }
+        .footer {
+            background-color: rgba(30, 131, 194, 0.9);
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
 
+<header>
+    <h1>The Valt</h1>
+</header>
+
+<nav>
+    <a href="https://discord.gg/55gbM698sc">Join Our Discord</a>
+    <a href="https://olibot1107.github.io/Thevalt.gitub.io/Dr">Apply For Staff</a>
+</nav>
+
+<div class="content" id="home">
+    <h2>About Our Server</h2>
+    <p></p>
+</div>
+
+<div class="content" id="kits">
+    <h2>How to Get Kits</h2>
+    <p>To get kits, follow these simple steps:</p>
+    <ol>
+        <li>First, join our <strong>Discord</strong>.</li>
+        <li>Join the server and get a kit.</li>
+        <li>Invite your friends to help grow the community.</li>
+    </ol>
+    <p>Join the fun and choose the kit that best suits you</p>
+</div>
+
+<div class="content" id="discord">
+    <h2>Join Our Discord</h2>
+    <p>Stay connected with the community, get updates on new kits and events!</p>
+    <a href="https://discord.gg/55gbM698sc" target="_blank">
+        <button>Join Now</button>
+    </a>
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 MC Kit Server. All rights reserved.</p>
+</div>
+
+</body>
+</html>
