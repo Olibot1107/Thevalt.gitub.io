@@ -3,128 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Valt</title>
+    <title>6b6t Kit bot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(-45deg, #1e83c2, #f4f4f4, #1e83c2, #555);
-            background-size: 400% 400%;
-            animation: gradientBackground 10s ease infinite;
-            overflow-x: hidden;
-        }
-        @keyframes gradientBackground {
+        /* Custom CSS for background animation */
+        @keyframes gradient-animation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        header {
-            background-color: rgba(30, 131, 194, 0.9);
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            animation: bounceIn 1s ease-out forwards;
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(270deg, #6a11cb, #2575fc); /* Initial gradient */
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+            color: #e2e8f0; /* Light text color */
+            overflow-x: hidden; /* Prevent horizontal scroll due to animations */
         }
-        @keyframes bounceIn {
-            0% { transform: translateY(-100%); }
-            60% { transform: translateY(30px); }
-            100% { transform: translateY(0); }
+
+        /* Keyframe for the universal fade-in-up animation */
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(40px); /* Increased slide distance for a more noticeable slow slide */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: rgba(30, 131, 194, 0.9);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+        /* Base class for scroll animations - now only uses fade-up properties */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px); /* Initial state for fade-up */
+            /* Smoother bezier curve and longer duration for a very slow slide and fade */
+            transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        nav a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            text-align: center;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        nav a:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 20px white;
+
+        /* Specific animation for the hero text (typing effect) */
+        .hero-text span {
+            opacity: 0;
+            display: inline-block;
+            animation: fade-in-up 1.2s forwards cubic-bezier(0.16, 1, 0.3, 1); /* Slightly faster than scroll animations */
+            animation-delay: var(--delay); /* Use CSS variable for delay */
         }
-        .content {
-            padding: 20px;
-            text-align: center;
+
+        /* Responsive YouTube embed */
+        .video-container {
             position: relative;
-            animation: parallax 3s ease-in-out forwards;
-            transform-origin: center;
-            background-color: rgba(255, 255, 255, 0.8);
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 1rem; /* rounded-xl */
         }
-        @keyframes parallax {
-            0% { transform: translateY(50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
-        button {
-            padding: 15px 30px;
-            font-size: 18px;
-            color: white;
-            background-color: #1e83c2;
-            border: none;
-            border-radius: 8px;
+
+        /* Hamburger menu animation */
+        .hamburger-icon {
+            width: 24px;
+            height: 20px;
+            position: relative;
+            transform: rotate(0deg);
+            transition: .5s ease-in-out;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
-        button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(30, 131, 194, 0.8);
-            background-color: #555;
+
+        .hamburger-icon span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: #cbd5e0; /* blue-200 */
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
         }
-        .footer {
-            background-color: rgba(30, 131, 194, 0.9);
-            color: white;
-            padding: 10px 0;
-            text-align: center;
+
+        .hamburger-icon span:nth-child(1) {
+            top: 0px;
+        }
+
+        .hamburger-icon span:nth-child(2),
+        .hamburger-icon span:nth-child(3) {
+            top: 8px;
+        }
+
+        .hamburger-icon span:nth-child(4) {
+            top: 16px;
+        }
+
+        .hamburger-icon.open span:nth-child(1) {
+            top: 8px;
+            width: 0%;
+            left: 50%;
+        }
+
+        .hamburger-icon.open span:nth-child(2) {
+            transform: rotate(45deg);
+        }
+
+        .hamburger-icon.open span:nth-child(3) {
+            transform: rotate(-45deg);
+        }
+
+        .hamburger-icon.open span:nth-child(4) {
+            top: 8px;
+            width: 0%;
+            left: 50%;
+        }
+
+        /* Ensure menu is hidden by default on small screens and visible on large screens */
+        #menu {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        #menu.open {
+            max-height: 300px; /* Adjust based on content height */
+            opacity: 1;
+        }
+
+        @media (min-width: 1024px) { /* lg breakpoint */
+            #menu {
+                max-height: none; /* Remove max-height restriction on large screens */
+                opacity: 1;
+                display: flex !important; /* Ensure it's always flex on lg screens */
+            }
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col antialiased">
 
-<header>
-    <h1>The Valt</h1>
-</header>
+    <header class="p-6 md:p-8 bg-gray-900 bg-opacity-70 shadow-lg rounded-b-xl mx-auto w-11/12 md:w-5/6 mt-4 animate-on-scroll">
+        <nav class="flex items-center justify-between flex-wrap">
+            <div class="flex items-center flex-shrink-0 text-white mr-6">
+                <span class="font-bold text-2xl tracking-tight rounded-lg p-2 bg-gradient-to-r from-blue-500 to-purple-600">6b6t Kit bot</span>
+            </div>
+            <div class="block lg:hidden">
+                <button id="menu-button" class="flex items-center px-3 py-2 border rounded border-blue-400 hover:border-white transition duration-300 ease-in-out">
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+            <div id="menu" class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+                <div class="text-sm lg:flex-grow lg:flex lg:justify-end">
+                    <a href="#features" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 transition duration-300 ease-in-out px-3 py-2 rounded-md hover:bg-gray-700">
+                        Features
+                    </a>
+                    <a href="#staff" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 transition duration-300 ease-in-out px-3 py-2 rounded-md hover:bg-gray-700">
+                        Staff
+                    </a>
+                    <a href="#about" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 transition duration-300 ease-in-out px-3 py-2 rounded-md hover:bg-gray-700">
+                        About
+                    </a>
+                    <a href="#video" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 transition duration-300 ease-in-out px-3 py-2 rounded-md hover:bg-gray-700">
+                        Video
+                    </a>
+                    <a href="#contact" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white transition duration-300 ease-in-out px-3 py-2 rounded-md hover:bg-gray-700">
+                        Contact
+                    </a>
+                </div>
+                <div class="mt-4 lg:mt-0 lg:ml-4">
+                    <a href="#" class="inline-block text-sm px-4 py-2 leading-none border rounded-full text-white border-white hover:border-transparent hover:text-blue-500 hover:bg-white transition duration-300 ease-in-out">Join Clan</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-<nav>
-    <a href="https://discord.gg/55gbM698sc">Join Our Discord</a>
-    <a href="https://olibot1107.github.io/Thevalt.gitub.io/Dr">Apply For Staff</a>
-</nav>
+    <main class="flex-grow flex items-center justify-center py-24 px-4 md:px-0">
+        <div class="text-center max-w-5xl">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-8 text-white hero-text">
+                <span style="--delay: 0s;">Your</span>
+                <span style="--delay: 0.2s;">Clan's</span>
+                <span style="--delay: 0.4s;">Ultimate</span>
+                <span style="--delay: 0.6s;">6b6t</span>
+                <span style="--delay: 0.8s;">Kit</span>
+                <span style="--delay: 1s;">Bot.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-blue-100 mb-10 animate-on-scroll" style="animation-delay: 1.4s;">
+                Providing free kits and essential support for your 6b6t adventures.
+            </p>
+            <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out animate-on-scroll" style="animation-delay: 1.6s;">
+                Get Free Kits Now
+            </button>
+        </div>
+    </main>
 
-<div class="content" id="home">
-    <h2>About Our Server</h2>
-    <p></p>
-</div>
+    <section id="features" class="py-20 px-4 md:px-8 bg-gray-800 bg-opacity-80 rounded-xl mx-auto w-11/12 md:w-5/6 mb-16">
+        <h2 class="text-4xl font-bold text-center mb-16 text-white animate-on-scroll">Bot Features & Benefits</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="bg-gray-700 p-8 rounded-xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out animate-on-scroll" style="animation-delay: 0.2s;">
+                <div class="text-blue-400 text-5xl mb-6 text-center">
+                    <i class="fas fa-box text-blue-400"></i> </div>
+                <h3 class="text-2xl font-semibold text-white mb-4 text-center">Instant Free Kits</h3>
+                <p class="text-blue-200 text-center">Access a wide range of essential kits for your 6b6t survival and dominance.</p>
+            </div>
+            <div class="bg-gray-700 p-8 rounded-xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out animate-on-scroll" style="animation-delay: 0.4s;">
+                <div class="text-green-400 text-5xl mb-6 text-center">
+                    <i class="fas fa-robot text-green-400"></i> </div>
+                <h3 class="text-2xl font-semibold text-white mb-4 text-center">Automated Tapping</h3>
+                <p class="text-blue-200 text-center">Our bot handles the tapping, ensuring smooth and consistent kit distribution.</p>
+            </div>
+            <div class="bg-gray-700 p-8 rounded-xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out animate-on-scroll" style="animation-delay: 0.6s;">
+                <div class="text-purple-400 text-5xl mb-6 text-center">
+                    <i class="fas fa-handshake text-purple-400"></i> </div>
+                <h3 class="text-2xl font-semibold text-white mb-4 text-center">Clan Support</h3>
+                <p class="text-blue-200 text-center">Dedicated to empowering our clan members with the resources they need.</p>
+            </div>
+        </div>
+    </section>
 
-<div class="content" id="kits">
-    <h2>How to Get Kits</h2>
-    <p>To get kits, follow these simple steps:</p>
-    <ol>
-        <li>First, join our <strong>Discord</strong>.</li>
-        <li>Join the server and get a kit.</li>
-        <li>Invite your friends to help grow the community.</li>
-    </ol>
-    <p>Join the fun and choose the kit that best suits you</p>
-</div>
+    <section id="staff" class="py-20 px-4 md:px-8 bg-gray-900 bg-opacity-70 rounded-xl mx-auto w-11/12 md:w-5/6 mb-16">
+        <h2 class="text-4xl font-bold text-center mb-16 text-white animate-on-scroll">Meet Our Dedicated Staff</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div class="bg-gray-700 p-8 rounded-xl shadow-xl flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out animate-on-scroll" style="animation-delay: 0.2s;">
+                <img src="https://placehold.co/120x120/2575fc/ffffff?text=Owner" alt="Staff Member 1" class="rounded-full w-32 h-32 object-cover mb-4 border-4 border-blue-400">
+                <h3 class="text-2xl font-semibold text-white mb-2">Alpha Leader</h3>
+                <p class="text-blue-200 text-lg mb-2 flex items-center justify-center">
+                    <i class="fas fa-crown text-yellow-400 mr-2 text-xl"></i> Clan Owner & Strategist
+                </p>
+                <p class="text-blue-300 text-sm">Oversees all clan operations and future developments.</p>
+            </div>
+            <div class="bg-gray-700 p-8 rounded-xl shadow-xl flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out animate-on-scroll" style="animation-delay: 0.4s;">
+                <img src="https://placehold.co/120x120/6a11cb/ffffff?text=Dev" alt="Staff Member 2" class="rounded-full w-32 h-32 object-cover mb-4 border-4 border-purple-400">
+                <h3 class="text-2xl font-semibold text-white mb-2">Bot Master</h3>
+                <p class="text-blue-200 text-lg mb-2 flex items-center justify-center">
+                    <i class="fas fa-code text-green-400 mr-2 text-xl"></i> Kit Bot Developer & Maintainer
+                </p>
+                <p class="text-blue-300 text-sm">Ensures the kit bot runs flawlessly and implements new features.</p>
+            </div>
+            <div class="bg-gray-700 p-8 rounded-xl shadow-xl flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out animate-on-scroll" style="animation-delay: 0.6s;">
+                <img src="https://placehold.co/120x120/2575fc/ffffff?text=Admin" alt="Staff Member 3" class="rounded-full w-32 h-32 object-cover mb-4 border-4 border-blue-400">
+                <h3 class="text-2xl font-semibold text-white mb-2">Head Admin</h3>
+                <p class="text-blue-200 text-lg mb-2 flex items-center justify-center">
+                    <i class="fas fa-user-shield text-red-400 mr-2 text-xl"></i> Administration & Oversight
+                </p>
+                <p class="text-blue-300 text-sm">Manages clan administration and ensures smooth operations.</p>
+            </div>
+            <div class="bg-gray-700 p-8 rounded-xl shadow-xl flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out animate-on-scroll" style="animation-delay: 0.8s;">
+                <img src="https://placehold.co/120x120/6a11cb/ffffff?text=Staff" alt="Staff Member 4" class="rounded-full w-32 h-32 object-cover mb-4 border-4 border-purple-400">
+                <h3 class="text-2xl font-semibold text-white mb-2">Community Manager</h3>
+                <p class="text-blue-200 text-lg mb-2 flex items-center justify-center">
+                    <i class="fas fa-users text-blue-400 mr-2 text-xl"></i> Discord & Member Support
+                </p>
+                <p class="text-blue-300 text-sm">Manages clan communications and assists members with queries.</p>
+            </div>
+        </div>
+    </section>
 
-<div class="content" id="discord">
-    <h2>Join Our Discord</h2>
-    <p>Stay connected with the community, get updates on new kits and events!</p>
-    <a href="https://discord.gg/55gbM698sc" target="_blank">
-        <button>Join Now</button>
-    </a>
-</div>
+    <section id="about" class="py-20 px-4 md:px-8 bg-gray-800 bg-opacity-80 rounded-xl mx-auto w-11/12 md:w-5/6 mb-16 flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2 text-center md:text-left animate-on-scroll">
+            <h2 class="text-4xl font-bold mb-8 text-white">About Our Clan & Bot</h2>
+            <p class="text-lg text-blue-100 mb-6">
+                We are a dedicated 6b6t clan focused on mutual support and thriving in the anarchy. Our custom-built 6b6t Kit bot is a core part of our strategy, designed to provide our members with free kits.
+            </p>
+            <p class="text-lg text-blue-100">
+                The bot automates the process of acquiring and distributing kits, ensuring that every clan member has access to the gear they need, whenever they need it, allowing you to focus on gameplay.
+            </p>
+        </div>
+        <div class="md:w-1/2 flex justify-center animate-on-scroll">
+            <img src="https://placehold.co/400x300/6a11cb/ffffff?text=6b6t+Kits" alt="6b6t Kits" class="rounded-xl shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out">
+        </div>
+    </section>
 
-<div class="footer">
-    <p>&copy; 2025 MC Kit Server. All rights reserved.</p>
-</div>
+    <section class="py-20 px-4 md:px-8 bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl mx-auto w-11/12 md:w-5/6 mb-16 text-center shadow-2xl animate-on-scroll">
+        <h2 class="text-4xl font-bold text-white mb-6">Ready to Gear Up on 6b6t?</h2>
+        <p class="text-xl text-blue-100 mb-8">
+            Join our clan and leverage the power of the 6b6t Kit bot for free, instant kits!
+        </p>
+        <button class="bg-white text-blue-700 font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+            Join Our Discord
+        </button>
+    </section>
 
+    <section id="video" class="py-20 px-4 md:px-8 bg-gray-800 bg-opacity-80 rounded-xl mx-auto w-11/12 md:w-5/6 mb-16">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white animate-on-scroll">See the Bot in Action</h2>
+        <div class="max-w-4xl mx-auto video-container animate-on-scroll">
+            <iframe
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&modestbranding=1&rel=0"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                class="rounded-xl"
+            ></iframe>
+        </div>
+        <p class="text-center text-blue-200 mt-8 animate-on-scroll">
+            Learn more about our passion for design and development in this short video.
+        </p>
+    </section>
+
+    <footer id="contact" class="bg-gray-900 bg-opacity-70 text-blue-200 py-8 px-4 md:px-8 text-center rounded-t-xl mx-auto w-11/12 md:w-5/6 mt-auto animate-on-scroll">
+        <p>© 2025 6b6t Kit bot. All rights reserved.</p>
+        <div class="flex justify-center space-x-6 mt-4">
+            <a href="#" class="hover:text-white transition duration-300 ease-in-out">Privacy Policy</a>
+            <a href="#" class="hover:text-white transition duration-300 ease-in-out">Terms of Service</a>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for mobile menu toggle and hamburger animation
+        document.getElementById('menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            const hamburgerIcon = this.querySelector('.hamburger-icon');
+
+            menu.classList.toggle('open'); // Toggles max-height and opacity for the menu
+            hamburgerIcon.classList.toggle('open'); // Toggles the hamburger icon animation
+        });
+
+        // JavaScript for scroll-based animations
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+        // Observer for elements coming into view
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Stop observing once visible to prevent re-triggering
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.25 // Trigger when 25% of the element is visible
+        });
+
+        animateElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Add a slight delay for initial hero section animations to ensure they play after load
+        window.addEventListener('load', () => {
+            const heroElements = document.querySelectorAll('.hero-text span, .hero-text + p, .hero-text + p + button');
+            heroElements.forEach(el => {
+                // Ensure the initial state is reset for animations to play correctly
+                el.style.opacity = '';
+                el.style.transform = '';
+            });
+        });
+    </script>
 </body>
 </html>
