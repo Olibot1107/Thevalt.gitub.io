@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft Item Updater</title>
+  <style>
+    body { font-family: sans-serif; background: #1e1e1e; color: #eee; padding: 20px; }
+    textarea { width: 100%; height: 300px; margin-top: 10px; font-family: monospace; background: #2e2e2e; color: #0f0; border: none; padding: 10px; }
+    button { padding: 10px 20px; margin-top: 10px; font-size: 16px; background-color: #333; color: #fff; border: none; cursor: pointer; }
+    button:hover { background-color: #555; }
+    pre, #progress { background: #2e2e2e; padding: 10px; overflow-x: auto; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Minecraft Items Updater</h1>
+  <p>Paste your old <code>itemsByName.json</code> content below and click Update to fetch and add new Minecraft items from the API.</p>
+  <textarea id="input" placeholder="Paste itemsByName.json content here..."></textarea>
+  <button onclick="updateItems()">Update Items</button>
+  <h2>Progress</h2>
+  <pre id="progress">Waiting...</pre>
+  <h2>Updated Output</h2>
+  <textarea id="output" readonly placeholder="Updated JSON will appear here..."></textarea>
+  <h2>Summary</h2>
+  <pre id="summary">No updates yet.</pre>
+
+  <script>
+    async function fetchMinecraftItems() {
+      const response = await fetch('https://raw.githubusercontent.com/PrismarineJS/minecraft-data/master/data/pc/1.21.3/items.json');
+      if (!response.ok) throw new Error('Failed to fetch Minecraft items.');
+      return await response.json();
+    }
+
+    async function fetchItemImageBase64(name) {
+      try {
+        const url = `https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21.3/assets/minecraft/textures/item/${name}.png`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Image not found');
+        const blob = await response.blob();
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      } catch (err) {
+        return null;
+      }
+    }
+
+    async function updateItems() {
+      try {
+        const inputText = document.getElementById('input').value;
+        const parsed = JSON.parse(inputText);
+        const fetchedItems = await fetchMinecraftItems();
+        const added = [];
+        const progress = document.getElementById('progress');
+
+        let i = 0;
+
+        async function processBatch() {
+          const batch = fetchedItems.slice(i, i + 3);
+
+          for (let item of batch) {
+            const id = `minecraft:${item.name}`;
+            progress.textContent = `Checking: ${id} (${i + 1} / ${fetchedItems.length})`;
+
+            if (!parsed[id]) {
+              const base64img = await fetchItemImageBase64(item.name);
+              parsed[id] = {
+                id,
+                name: item.name,
+                displayName: item.displayName || item.name,
+                stackSize: item.stackSize || 64,
+                image: base64img || null
+              };
+              added.push(id);
+            }
+            i++;
+          }
+
+          if (i < fetchedItems.length) {
+            setTimeout(processBatch, 0);
+          } else {
+            const updatedJson = JSON.stringify(parsed, null, 2);
+            document.getElementById('output').value = updatedJson;
+
+            const summaryText = added.length === 0
+              ? "No new items were added."
+              : `Added ${added.length} new item(s):\n` + added.join("\n");
+
+            document.getElementById('summary').textContent = summaryText;
+            progress.textContent += "\nUpdate complete.";
+          }
+        }
+
+        processBatch();
+      } catch (e) {
+        alert("Error: " + e.message);
+      }
+    }
+  </script>
+</body>
+</html>
