@@ -407,43 +407,46 @@
 
     <script>
         // JavaScript for mobile menu toggle and hamburger animation
-        document.getElementById('menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('menu');
-            const hamburgerIcon = this.querySelector('.hamburger-icon');
+document.getElementById('menu-button').addEventListener('click', function() {
+    const menu = document.getElementById('menu');
+    const hamburgerIcon = this.querySelector('.hamburger-icon');
 
-            menu.classList.toggle('open'); // Toggles max-height and opacity for the menu
-            hamburgerIcon.classList.toggle('open'); // Toggles the hamburger icon animation
-        });
+    menu.classList.toggle('open'); // Toggles max-height and opacity for the menu
+    hamburgerIcon.classList.toggle('open'); // Toggles the hamburger icon animation
+});
 
-        // JavaScript for scroll-based animations
-        const animateElements = document.querySelectorAll('.animate-on-scroll');
+// JavaScript for scroll-based animations
+const animateElements = document.querySelectorAll('.animate-on-scroll');
 
-        // Observer for elements coming into view
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    // Stop observing once visible to prevent re-triggering
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.25 // Trigger when 25% of the element is visible
-        });
+// Observer for elements coming into and leaving view
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Add 'is-visible' class when element comes into view
+            entry.target.classList.add('is-visible');
+        } else {
+            // Remove 'is-visible' class when element leaves view
+            // This resets the animation state so it can play again
+            entry.target.classList.remove('is-visible');
+        }
+    });
+}, {
+    threshold: 0.25 // Trigger when 25% of the element is visible
+});
 
-        animateElements.forEach(element => {
-            observer.observe(element);
-        });
+animateElements.forEach(element => {
+    observer.observe(element);
+});
 
-        // Add a slight delay for initial hero section animations to ensure they play after load
-        window.addEventListener('load', () => {
-            const heroElements = document.querySelectorAll('.hero-text span, .hero-text + p, .hero-text + p + button, .hero-text + p + button + div'); // Include the new status image div
-            heroElements.forEach(el => {
-                // Ensure the initial state is reset for animations to play correctly
-                el.style.opacity = '';
-                el.style.transform = '';
-            });
-        });
+// Add a slight delay for initial hero section animations to ensure they play after load
+window.addEventListener('load', () => {
+    const heroElements = document.querySelectorAll('.hero-text span, .hero-text + p, .hero-text + p + button, .hero-text + p + button + div'); // Include the new status image div
+    heroElements.forEach(el => {
+        // Ensure the initial state is reset for animations to play correctly
+        el.style.opacity = '';
+        el.style.transform = '';
+    });
+});
     </script>
 </body>
 </html>
